@@ -1,37 +1,29 @@
-import { AnyAction } from 'redux'
+import { UserAction, UserActionTypes, UserState } from "../../types/user"
 
-import { UserInterface } from "../../models/UserInterface";
-import { SET_AUTH, USER_LOGIN, USER_LOGOUT, USER_REGISTRATION } from "../constants";
-
-const initialState: object = {
-  user: {} as UserInterface,
-  isAuth: false as boolean
+const initialState: UserState = {
+  userData: {},
+  allUsers: [],
+  loading: false,
+  isAuth: false,
+  error: null
 }
 
-const userReducer = (state = initialState, action: AnyAction) => {
+const userReducer = (state = initialState, action: UserAction): UserState => {
   switch (action.type) {
-    case SET_AUTH:
-      return {
-        ...state,
-        isAuth: action.payload
-      }
-    case USER_REGISTRATION:
-      return {
-        ...state,
-        user: action.payload
-      }
-      case USER_LOGIN:
-        return {
-          ...state,
-          user: action.payload,
-          isAuth: true
-        }
-    case USER_LOGOUT:
-      return {
-        ...state,
-        user: {},
-        isAuth: false
-      }
+    case UserActionTypes.FETCH_USERS:
+      return { ...state, loading: true, error: null, allUsers: [] }
+    case UserActionTypes.FETCH_USERS_SUCCESS:
+      return { ...state, loading: false, error: null, allUsers: action.payload }
+    case UserActionTypes.FETCH_USERS_ERROR:
+      return { ...state, loading: false, error: action.payload, allUsers: [] }
+    case UserActionTypes.SET_AUTH:
+      return { ...state, isAuth: action.payload }
+    case UserActionTypes.USER_REGISTRATION:
+      return { ...state, userData: action.payload }
+    case UserActionTypes.USER_LOGIN:
+      return { ...state, userData: action.payload }
+    case UserActionTypes.USER_LOGOUT:
+      return { ...state, userData: {}, isAuth: false }
     default:
       return state
   }

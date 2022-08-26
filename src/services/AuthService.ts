@@ -1,13 +1,19 @@
-import $api from "../http"
-import {AxiosResponse} from 'axios';
-import { AuthResponse } from "../models/response/AuthResponse";
+import $api from './AxiosService'
+import { AxiosResponse } from 'axios'
+import { AuthResponse } from '../types/AuthResponse'
 
 export default class AuthService {
-  static async registration(email: string, password: string): Promise<AxiosResponse<AuthResponse>> {
+  static async registration(
+    email: string,
+    password: string
+  ): Promise<AxiosResponse<AuthResponse>> {
     return $api.post<AuthResponse>('/registration', { email, password })
   }
 
-  static async login(email: string, password: string): Promise<AxiosResponse<AuthResponse>> {
+  static async login(
+    email: string,
+    password: string
+  ): Promise<AxiosResponse<AuthResponse>> {
     return $api.post<AuthResponse>('/login', { email, password })
   }
 

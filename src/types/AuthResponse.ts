@@ -1,4 +1,4 @@
-import { UserInterface } from "../UserInterface"
+import { UserInterface } from './user'
 
 export interface AuthResponse {
   accessToken: string

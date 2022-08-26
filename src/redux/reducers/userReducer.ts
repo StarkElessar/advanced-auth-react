@@ -1,12 +1,12 @@
-import { UserInterface } from "../../models/UserInterface"
-import { UserAction, UserActionTypes, UserState } from "../../types/user"
+import { UserInterface } from '../../types/user'
+import { UserAction, UserActionTypes, UserState } from '../../types/user'
 
 const initialState: UserState = {
   userData: {} as UserInterface,
   allUsers: [],
   loading: false,
   isAuth: false,
-  error: null
+  error: null,
 }
 
 const userReducer = (state = initialState, action: UserAction): UserState => {

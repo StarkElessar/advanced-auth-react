@@ -1,33 +1,45 @@
-import { FC, useState } from 'react'
+import { FC, ChangeEvent, useState } from 'react'
+import { useActions } from '../hooks/useActions'
 
 const LoginForm: FC = () => {
-  const wrapperStyle: object = {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
+  const { userLogin, userRegister } = useActions()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
+  const onSetEmail = (event: ChangeEvent<HTMLInputElement>) =>
+    setEmail(event.target.value)
+  const onSetPassword = (event: ChangeEvent<HTMLInputElement>) =>
+    setPassword(event.target.value)
+
+  const onLogin = () => userLogin(email, password)
+  const onRegister = () => userRegister(email, password)
+
   return (
-    <div style={wrapperStyle}>
+    <div className="login">
       <input
+        className="login__input"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={onSetEmail}
         type="email"
-        style={{marginBottom: 20}}
-        placeholder='Email'
+        placeholder="Email"
       />
       <input
+        className="login__input"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={onSetPassword}
         type="password"
-        style={{marginBottom: 20}}
-        placeholder='Password'
+        placeholder="Password"
       />
-      <button>Login</button>
-      <button>Register</button>
+      <button
+        disabled={!email || !password}
+        className="login__btn"
+        onClick={onLogin}
+      >
+        Войти
+      </button>
+      <button className="login__btn" onClick={onRegister}>
+        Зарегистрироваться
+      </button>
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { useActions } from '../hooks/useActions'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 
 const UserList: FC = () => {
-  const {fetchUsers} = useActions()
+  const { fetchUsers } = useActions()
   const { error, loading, allUsers } = useTypedSelector((state) => state.user)
 
   console.log(allUsers)
@@ -24,7 +24,7 @@ const UserList: FC = () => {
     <div>
       <h1>UserList</h1>
       <ul>
-        {allUsers.map(({id, email}) => (
+        {allUsers.map(({ id, email }) => (
           <li key={id}>{email}</li>
         ))}
       </ul>

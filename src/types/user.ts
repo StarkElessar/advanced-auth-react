@@ -1,4 +1,8 @@
-import { UserInterface } from "../models/UserInterface"
+export interface UserInterface {
+  email: string
+  id: string
+  isActivated: boolean
+}
 
 export interface UserState {
   userData: UserInterface
@@ -16,7 +20,7 @@ export enum UserActionTypes {
   USER_LOGIN = 'USER_LOGIN',
   USER_LOGOUT = 'USER_LOGOUT',
   SET_AUTH = 'SET_AUTH',
-  SET_USER = 'SET_USER'
+  SET_USER = 'SET_USER',
 }
 
 interface FetchUsersAction {
@@ -50,7 +54,8 @@ interface UserLogoutAction {
   type: UserActionTypes.USER_LOGOUT
 }
 
-export type UserAction = FetchUsersAction
+export type UserAction =
+  | FetchUsersAction
   | FetchUsersSuccessAction
   | FetchUsersErrorAction
   | SetAuthAction

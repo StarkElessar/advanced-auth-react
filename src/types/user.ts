@@ -1,7 +1,7 @@
 import { UserInterface } from "../models/UserInterface"
 
 export interface UserState {
-  userData: UserInterface | {}
+  userData: UserInterface
   allUsers: any[]
   loading: boolean
   isAuth: boolean
@@ -33,17 +33,17 @@ interface FetchUsersErrorAction {
 
 interface SetAuthAction {
   type: UserActionTypes.SET_AUTH
-  payload: boolean
+  payload: UserInterface
 }
 
 interface UserRegistrationAction {
   type: UserActionTypes.USER_REGISTRATION
-  payload: UserInterface | {}
+  payload: UserInterface
 }
 
 interface UserLoginAction {
   type: UserActionTypes.USER_LOGIN
-  payload: UserInterface | {}
+  payload: UserInterface
 }
 
 interface UserLogoutAction {

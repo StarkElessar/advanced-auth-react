@@ -1,7 +1,8 @@
+import { UserInterface } from "../../models/UserInterface"
 import { UserAction, UserActionTypes, UserState } from "../../types/user"
 
 const initialState: UserState = {
-  userData: {},
+  userData: {} as UserInterface,
   allUsers: [],
   loading: false,
   isAuth: false,
@@ -17,13 +18,13 @@ const userReducer = (state = initialState, action: UserAction): UserState => {
     case UserActionTypes.FETCH_USERS_ERROR:
       return { ...state, loading: false, error: action.payload, allUsers: [] }
     case UserActionTypes.SET_AUTH:
-      return { ...state, isAuth: action.payload }
+      return { ...state, isAuth: true, userData: action.payload }
     case UserActionTypes.USER_REGISTRATION:
       return { ...state, userData: action.payload }
     case UserActionTypes.USER_LOGIN:
-      return { ...state, userData: action.payload }
+      return { ...state, userData: action.payload, isAuth: true }
     case UserActionTypes.USER_LOGOUT:
-      return { ...state, userData: {}, isAuth: false }
+      return { ...state, userData: {} as UserInterface, isAuth: false }
     default:
       return state
   }

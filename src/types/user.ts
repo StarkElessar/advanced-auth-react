@@ -13,6 +13,7 @@ export interface UserState {
 }
 
 export enum UserActionTypes {
+  SET_LOADING = 'SET_LOADING',
   FETCH_USERS = 'FETCH_USERS',
   FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS',
   FETCH_USERS_ERROR = 'FETCH_USERS_ERROR',
@@ -23,6 +24,10 @@ export enum UserActionTypes {
   SET_USER = 'SET_USER',
 }
 
+interface SetLoadingAction {
+  type: UserActionTypes.SET_LOADING
+  payload: boolean
+}
 interface FetchUsersAction {
   type: UserActionTypes.FETCH_USERS
 }
@@ -34,27 +39,24 @@ interface FetchUsersErrorAction {
   type: UserActionTypes.FETCH_USERS_ERROR
   payload: string
 }
-
 interface SetAuthAction {
   type: UserActionTypes.SET_AUTH
   payload: UserInterface
 }
-
 interface UserRegistrationAction {
   type: UserActionTypes.USER_REGISTRATION
   payload: UserInterface
 }
-
 interface UserLoginAction {
   type: UserActionTypes.USER_LOGIN
   payload: UserInterface
 }
-
 interface UserLogoutAction {
   type: UserActionTypes.USER_LOGOUT
 }
 
 export type UserAction =
+  | SetLoadingAction
   | FetchUsersAction
   | FetchUsersSuccessAction
   | FetchUsersErrorAction

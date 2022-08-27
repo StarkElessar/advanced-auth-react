@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { Button } from 'antd'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 import { useActions } from '../hooks/useActions'
@@ -8,10 +8,12 @@ import { LOGIN_ROUTE } from '../utils/consts'
 const Profile: FC = () => {
   const navigate = useNavigate()
   const { userLogout, fetchUsers } = useActions()
-  const { loading, isAuth, userData, allUsers, error } = useTypedSelector(({user}) => user)
+  const { loading, isAuth, userData, allUsers, error } = useTypedSelector(
+    ({ user }) => user
+  )
   const onLogout = () => {
     userLogout()
-    navigate(LOGIN_ROUTE)
+    !isAuth && navigate(LOGIN_ROUTE)
   }
 
   const getUsers = () => {
@@ -24,10 +26,6 @@ const Profile: FC = () => {
     }
   }
 
-  if (loading) {
-    return <div>Загрузка...</div>
-  }
-  
   return (
     <div>
       <h1>
@@ -35,9 +33,11 @@ const Profile: FC = () => {
           ? `Пользователь ${userData.email} авторизован`
           : 'Авторизуйтесь'}
       </h1>
-      
+
       <h1>
-        {userData.isActivated ? `Аккаунт активирован` : 'Активируйте аккаунт'}
+        {userData.isActivated
+          ? `Твой аккаунт активирован`
+          : 'Активируй аккаунт'}
       </h1>
 
       <div style={{ marginTop: 20, marginBottom: 20 }}>
@@ -48,11 +48,14 @@ const Profile: FC = () => {
           Выйти
         </Button>
       </div>
-
-      {allUsers &&
+      {loading ? (
+        <div>Загрузка...</div>
+      ) : (
+        allUsers &&
         allUsers.map(({ _id, email }) => {
           return <div key={_id}>{email}</div>
-        })}
+        })
+      )}
       {error && <h2>{error}</h2>}
     </div>
   )

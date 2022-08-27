@@ -1,8 +1,8 @@
-import { FC, ChangeEvent, useState } from 'react'
+import { FC, ChangeEvent, useState, useEffect } from 'react'
 import { Button, Checkbox, Form, Input } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
-
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
+
 import { useActions } from '../hooks/useActions'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 import { ADMIN_ROUTE } from '../utils/consts'
@@ -10,9 +10,10 @@ import { ADMIN_ROUTE } from '../utils/consts'
 const LoginConfirmForm: FC = () => {
   const navigate = useNavigate()
   const { userLogin } = useActions()
-  const { isAuth } = useTypedSelector(({ user }) => user)
+  const { statusLogin, error } = useTypedSelector(({ user }) => user)
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [messageStatus, setMessageStatus] = useState<string>('')
 
   const onSetEmail = (event: ChangeEvent<HTMLInputElement>) =>
     setEmail(event.target.value)
@@ -22,8 +23,18 @@ const LoginConfirmForm: FC = () => {
 
   const onLogin = () => {
     userLogin(email, password)
-    isAuth && navigate(ADMIN_ROUTE)
   }
+
+  useEffect(() => {
+    if (statusLogin === 'loading') {
+      setMessageStatus('Процесс авторизации..')
+    } else if (statusLogin === 'success') {
+      setMessageStatus('Вы успешно авторизовались!')
+      navigate(ADMIN_ROUTE)
+    } else if (statusLogin === 'error') {
+      setMessageStatus('Ошибка авторизации, повторите снова')
+    }
+  }, [navigate, statusLogin])
 
   return (
     <Form
@@ -31,7 +42,11 @@ const LoginConfirmForm: FC = () => {
       className="login-form"
       initialValues={{ remember: true }}
     >
-      <h1>Вы успешно создали аккаунт! Может войти в него:</h1>
+      <h1>Вы успешно создали аккаунт! Можете войти в него:</h1>
+      <div style={{ textAlign: 'center', marginBottom: 20, color: '#ff3636' }}>
+        {messageStatus} <br />
+        {error}
+      </div>
       <Form.Item
         name="useremail"
         rules={[

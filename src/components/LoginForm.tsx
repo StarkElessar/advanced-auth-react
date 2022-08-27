@@ -10,7 +10,7 @@ import { ADMIN_ROUTE, LOGIN_ROUTE, REGISTER_ROUTE } from '../utils/consts'
 const LoginForm: FC = () => {
   const navigate = useNavigate()
   const { userLogin } = useActions()
-  const { statusLogin, error } = useTypedSelector(({ user }) => user)
+  const { statusLogin, error  } = useTypedSelector(({ user }) => user)
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [messageStatus, setMessageStatus] = useState<string>('')
@@ -26,6 +26,9 @@ const LoginForm: FC = () => {
     
     if (statusLogin === 'success') {
       navigate(ADMIN_ROUTE)
+      setMessageStatus('Вы успешно авторизовались!')
+      setEmail('')
+      setPassword('')
     } else if (statusLogin === 'loading') {
       setMessageStatus('Процесс авторизации..')
     } else if (statusLogin === 'error') {

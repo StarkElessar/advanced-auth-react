@@ -5,6 +5,7 @@ const initialState: UserState = {
   userData: {} as UserInterface,
   allUsers: [],
   statusLogin: null,
+  statusRegister: null,
   loading: false,
   isAuth: false,
   error: null,
@@ -23,7 +24,11 @@ const userReducer = (state = initialState, action: UserAction): UserState => {
     case UserActionTypes.SET_AUTH:
       return { ...state, isAuth: true, userData: action.payload }
     case UserActionTypes.USER_REGISTRATION:
-      return { ...state, userData: action.payload }
+      return { ...state, userData: {} as UserInterface, statusRegister: 'loading', isAuth: false, error: null }
+    case UserActionTypes.USER_REGISTRATION_SUCCESS:
+      return { ...state, userData: action.payload, statusRegister: 'success', isAuth: true, error: null }
+    case UserActionTypes.USER_REGISTRATION_ERROR:
+      return { ...state, userData: {} as UserInterface, statusRegister: 'error', isAuth: false, error: action.payload }
     case UserActionTypes.USER_LOGIN:
       return { ...state, userData: {} as UserInterface, statusLogin: 'loading', isAuth: false, error: null }
     case UserActionTypes.USER_LOGIN_SUCCESS:
@@ -31,7 +36,15 @@ const userReducer = (state = initialState, action: UserAction): UserState => {
     case UserActionTypes.USER_LOGIN_ERROR:
       return { ...state, userData: {} as UserInterface, statusLogin: 'error', isAuth: false, error: action.payload }
     case UserActionTypes.USER_LOGOUT:
-      return { ...state, userData: {} as UserInterface, statusLogin: null, allUsers: [], isAuth: false, error: null }
+      return {
+        ...state,
+        userData: {} as UserInterface,
+        allUsers: [],
+        isAuth: false,
+        statusLogin: null,
+        statusRegister: null,
+        error: null
+      }
     default:
       return state
   }

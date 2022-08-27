@@ -1,15 +1,14 @@
 import { FC, useEffect } from 'react'
 
+import 'antd/dist/antd.css'
 import './App.css'
-import LoginForm from './components/LoginForm'
 import { useActions } from './hooks/useActions'
 import { useTypedSelector } from './hooks/useTypedSelector'
+import AppRoute from './components/AppRoute'
 
 const App: FC = () => {
-  const { checkAuth, userLogout } = useActions()
-  const { isAuth, userData } = useTypedSelector((state) => state.user)
-
-  console.log(isAuth, userData)
+  const { checkAuth } = useActions()
+  const { loading } = useTypedSelector(({user}) => user)
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -17,18 +16,13 @@ const App: FC = () => {
     }
   }, [])
 
-  if (!isAuth) {
-    return <LoginForm />
+  if (loading) {
+    return <h1>Идет загрузка..</h1>
   }
 
   return (
     <div className="wrapper">
-      <h1>
-        {isAuth
-          ? `Пользователь ${userData.email} авторизован..`
-          : 'Авторизуйтесь'}
-      </h1>
-      <button onClick={() => userLogout()}>Выйти</button>
+      <AppRoute/>
     </div>
   )
 }

@@ -8,6 +8,7 @@ export interface UserState {
   userData: UserInterface
   allUsers: any[]
   statusLogin: null | 'loading' | 'success' | 'error'
+  statusRegister: null | 'loading' | 'success' | 'error'
   loading: boolean
   isAuth: boolean
   error: null | string
@@ -19,6 +20,8 @@ export enum UserActionTypes {
   FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS',
   FETCH_USERS_ERROR = 'FETCH_USERS_ERROR',
   USER_REGISTRATION = 'USER_REGISTRATION',
+  USER_REGISTRATION_SUCCESS = 'USER_REGISTRATION_SUCCESS',
+  USER_REGISTRATION_ERROR = 'USER_REGISTRATION_ERROR',
   USER_LOGIN = 'USER_LOGIN',
   USER_LOGIN_SUCCESS= 'USER_LOGIN_SUCCESS',
   USER_LOGIN_ERROR = 'USER_LOGIN_ERROR',
@@ -48,7 +51,14 @@ interface SetAuthAction {
 }
 interface UserRegistrationAction {
   type: UserActionTypes.USER_REGISTRATION
+}
+interface UserRegistrationSuccessAction {
+  type: UserActionTypes.USER_REGISTRATION_SUCCESS
   payload: UserInterface
+}
+interface UserRegistrationErrorAction {
+  type: UserActionTypes.USER_REGISTRATION_ERROR
+  payload: string
 }
 interface UserLoginAction {
   type: UserActionTypes.USER_LOGIN
@@ -72,6 +82,8 @@ export type UserAction =
   | FetchUsersErrorAction
   | SetAuthAction
   | UserRegistrationAction
+  | UserRegistrationSuccessAction
+  | UserRegistrationErrorAction
   | UserLoginAction
   | UserLoginSuccessAction
   | UserLoginErrorAction

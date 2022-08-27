@@ -1,4 +1,4 @@
-import $api from './AxiosService'
+import { $api, $apiRefresh } from './AxiosService'
 import { AxiosResponse } from 'axios'
 import { AuthResponse } from '../types/AuthResponse'
 
@@ -15,6 +15,10 @@ export default class AuthService {
     password: string
   ): Promise<AxiosResponse<AuthResponse>> {
     return $api.post<AuthResponse>('/login', { email, password })
+  }
+
+  static async refresh(): Promise<AxiosResponse<AuthResponse>> {
+    return $apiRefresh.get<AuthResponse>(`/refresh`)
   }
 
   static async logout(): Promise<void> {

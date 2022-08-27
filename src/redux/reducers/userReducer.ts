@@ -4,6 +4,7 @@ import { UserAction, UserActionTypes, UserState } from '../../types/user'
 const initialState: UserState = {
   userData: {} as UserInterface,
   allUsers: [],
+  statusLogin: null,
   loading: false,
   isAuth: false,
   error: null,
@@ -24,9 +25,13 @@ const userReducer = (state = initialState, action: UserAction): UserState => {
     case UserActionTypes.USER_REGISTRATION:
       return { ...state, userData: action.payload }
     case UserActionTypes.USER_LOGIN:
-      return { ...state, userData: action.payload, isAuth: true, error: null }
+      return { ...state, userData: {} as UserInterface, statusLogin: 'loading', isAuth: false, error: null }
+    case UserActionTypes.USER_LOGIN_SUCCESS:
+      return { ...state, userData: action.payload, statusLogin: 'success', isAuth: true, error: null }
+    case UserActionTypes.USER_LOGIN_ERROR:
+      return { ...state, userData: {} as UserInterface, statusLogin: 'error', isAuth: false, error: action.payload }
     case UserActionTypes.USER_LOGOUT:
-      return { ...state, userData: {} as UserInterface, allUsers: [], isAuth: false, error: null }
+      return { ...state, userData: {} as UserInterface, statusLogin: null, allUsers: [], isAuth: false, error: null }
     default:
       return state
   }

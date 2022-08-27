@@ -22,20 +22,24 @@ export const fetchUsers = () => async (dispatch: Dispatch<UserAction>) => {
   }
 }
 
-export const userLogin =
-  (email: string, password: string) =>
+export const userLogin = (email: string, password: string) =>
   async (dispatch: Dispatch<UserAction>) => {
+    dispatch({ type: UserActionTypes.USER_LOGIN })
     try {
       const response = await AuthService.login(email, password)
       console.log(response.data.user)
 
       localStorage.setItem('token', response.data.accessToken)
       dispatch({
-        type: UserActionTypes.USER_LOGIN,
+        type: UserActionTypes.USER_LOGIN_SUCCESS,
         payload: response.data.user,
       })
     } catch (error: any) {
       console.log(error.response?.data?.message)
+      dispatch({
+        type: UserActionTypes.USER_LOGIN_ERROR,
+        payload: 'Попробуйте войти еще раз',
+      })
     }
   }
 

@@ -10,7 +10,8 @@ import { LOGIN_CONFIRM_ROUTE, LOGIN_ROUTE } from '../utils/consts'
 const RegisterForm: FC = () => {
   const navigate = useNavigate()
   const { userRegister } = useActions()
-  const { isAuth, error, statusRegister } = useTypedSelector(({user}) => user)
+  const { error, statusRegister } = useTypedSelector(({ user }) => user)
+  const [registerForm] = Form.useForm()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [messageStatus, setMessageStatus] = useState<string>('')
@@ -30,23 +31,24 @@ const RegisterForm: FC = () => {
       setMessageStatus('Аккаунт создается..')
     } else if (statusRegister === 'success') {
       setMessageStatus('Аккаунт успешно создан!')
+      registerForm.resetFields()
       navigate(LOGIN_CONFIRM_ROUTE)
     } else if (statusRegister === 'error') {
-      setMessageStatus('Что то пошло не так..')
+      registerForm.resetFields()
     }
-  }, [navigate, statusRegister])
+  }, [navigate, registerForm, statusRegister])
 
   return (
     <Form
+      form={registerForm}
       name="normal_login"
       className="login-form"
       initialValues={{ remember: true }}
     >
-      <h1 style={{ textAlign: 'center' }}>Создать аккаунт</h1>
-      <div style={{ textAlign: 'center', marginBottom: 20, color: '#ff3636' }}>
-        {messageStatus} <br />
+      <h1 style={{ textAlign: 'center', marginBottom: 5 }}>Создать аккаунт</h1>
+      {error && (<div style={{ textAlign: 'center', marginBottom: 10, color: '#ff3636' }}>
         {error}
-      </div>
+      </div>)}
       <Form.Item
         name="useremail"
         rules={[{ required: true, message: 'Пожалуйста введите ваш действующий email!' }]}

@@ -8,6 +8,7 @@ import { useTypedSelector } from '../hooks/useTypedSelector'
 import { ADMIN_ROUTE } from '../utils/consts'
 
 const LoginConfirmForm: FC = () => {
+  const [loginForm] = Form.useForm()
   const navigate = useNavigate()
   const { userLogin } = useActions()
   const { statusLogin, error } = useTypedSelector(({ user }) => user)
@@ -17,36 +18,43 @@ const LoginConfirmForm: FC = () => {
 
   const onSetEmail = (event: ChangeEvent<HTMLInputElement>) =>
     setEmail(event.target.value)
-
   const onSetPassword = (event: ChangeEvent<HTMLInputElement>) =>
     setPassword(event.target.value)
-
-  const onLogin = () => {
-    userLogin(email, password)
-  }
+  const onLogin = () => userLogin(email, password)
 
   useEffect(() => {
     if (statusLogin === 'loading') {
       setMessageStatus('Процесс авторизации..')
     } else if (statusLogin === 'success') {
       setMessageStatus('Вы успешно авторизовались!')
+      loginForm.resetFields()
       navigate(ADMIN_ROUTE)
     } else if (statusLogin === 'error') {
       setMessageStatus('Ошибка авторизации, повторите снова')
+      loginForm.resetFields()
     }
-  }, [navigate, statusLogin])
+  }, [loginForm, navigate, statusLogin])
 
   return (
     <Form
+      form={loginForm}
       name="normal_login"
       className="login-form"
       initialValues={{ remember: true }}
     >
       <h1>Вы успешно создали аккаунт! Можете войти в него:</h1>
-      <div style={{ textAlign: 'center', marginBottom: 20, color: '#ff3636' }}>
-        {messageStatus} <br />
-        {error}
-      </div>
+      {error && (
+        <div
+          style={{
+            textAlign: 'center',
+            marginBottom: 10,
+            color: '#ff3636',
+          }}
+        >
+          {messageStatus} <br />
+          {error}
+        </div>
+      )}
       <Form.Item
         name="useremail"
         rules={[

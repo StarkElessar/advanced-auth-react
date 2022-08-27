@@ -52,8 +52,12 @@ const Profile: FC = () => {
         <div>Загрузка...</div>
       ) : (
         allUsers &&
-        allUsers.map(({ _id, email }) => {
-          return <div key={_id}>{email}</div>
+        allUsers.map(({ _id, email, isActivated }) => {
+          return (
+            <div key={_id}>
+              {email} : {_id} : {`аккаунт ${isActivated ? '' : 'не'} активирован`}
+            </div>
+          )
         })
       )}
       {error && <h2>{error}</h2>}

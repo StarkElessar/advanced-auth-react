@@ -1,0 +1,5 @@
+export const HOME_ROUTE: string = '/'
+export const LOGIN_ROUTE: string = '/login'
+export const LOGIN_CONFIRM_ROUTE: string = '/login-confirm'
+export const REGISTER_ROUTE: string = '/register'
+export const ADMIN_ROUTE: string = '/admin'

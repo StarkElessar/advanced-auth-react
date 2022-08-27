@@ -38,25 +38,29 @@ export const userLogin = (email: string, password: string) =>
       console.log(error.response?.data?.message)
       dispatch({
         type: UserActionTypes.USER_LOGIN_ERROR,
-        payload: 'Попробуйте войти еще раз',
+        payload: error.response?.data?.message,
       })
     }
   }
 
-export const userRegister =
-  (email: string, password: string) =>
+export const userRegister = (email: string, password: string) =>
   async (dispatch: Dispatch<UserAction>) => {
+    dispatch({ type: UserActionTypes.USER_REGISTRATION })
     try {
       const response = await AuthService.registration(email, password)
       console.log(response)
 
       localStorage.setItem('token', response.data.accessToken)
       dispatch({
-        type: UserActionTypes.USER_LOGIN,
+        type: UserActionTypes.USER_REGISTRATION_SUCCESS,
         payload: response.data.user,
       })
     } catch (error: any) {
       console.log(error.response?.data?.message)
+      dispatch({
+        type: UserActionTypes.USER_REGISTRATION_ERROR,
+        payload: error.response?.data?.message,
+      })
     }
   }
 
